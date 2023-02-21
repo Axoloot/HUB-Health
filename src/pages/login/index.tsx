@@ -3,10 +3,13 @@ import { useState } from 'react';
 import { Text } from '@nextui-org/react';
 // import { useRouter } from 'next/router';
 import { useUserContext } from '../../providers/userProvider';
+import { useRouter } from 'next/router';
 
 const Login = () => {
   // const router = useRouter();
   const { login } = useUserContext();
+  const router = useRouter();
+  const { error } = router.query;
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState(``);
 
@@ -57,6 +60,13 @@ const Login = () => {
             className="form-input"
             onChange={(e) => setPassword(e.target.value)}
           />
+          <Text
+            h4
+            color={error ? `red` : `transparent`}
+            style={{ padding: 0, margin: 0 }}
+          >
+            Mauvais email ou mot de passe
+          </Text>
           <button
             onClick={async () => {
               await login(email, password);
