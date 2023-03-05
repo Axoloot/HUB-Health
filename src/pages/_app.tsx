@@ -6,6 +6,9 @@ import '../../styles/layout.css';
 import '../../styles/globals.css';
 import UserProvider from '../providers/userProvider';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const AnyComponent = Component as any;
   return (
@@ -26,6 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <UserProvider>
         <AnyComponent {...pageProps} />
       </UserProvider>
+      <ToastContainer />
     </>
   );
 }

@@ -2,96 +2,77 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Text } from '@nextui-org/react';
 import { useUserContext } from '../../providers/userProvider';
+import { Input, Button } from '../../components';
+import { toast } from 'react-toastify';
+import { ROUTER } from '@/lib/utils';
+
+type RegisterFormProps = {
+  email: string;
+  pseudo: string;
+  password: string;
+};
 
 const Login = () => {
   const [email, setEmail] = useState(``);
   const [pseudo, setPseudo] = useState(``);
   const [password, setPassword] = useState(``);
-  const [profilImg, setProfilImg] = useState(``);
   const { signup } = useUserContext();
 
+  const submitForm = ({ email, password, pseudo }: RegisterFormProps) => {
+    if (!email) {
+      toast.error(`L'email est obligatoire`);
+      return;
+    }
+    if (!password) {
+      toast.error(`Le mot de passe est obligatoire`);
+      return;
+    }
+    if (!pseudo) {
+      toast.error(`Le pseudo est obligatoire`);
+      return;
+    }
+    signup({ email, password, pseudo });
+  };
+
   return (
-    <div className="layout-container">
-      <div
-        style={{
-          width: `100%`,
-          height: `100vh`,
-          display: `flex`,
-          flexDirection: `column`,
-          alignItems: `center`,
-          justifyContent: `center`,
-        }}
-      >
-        <div
-          style={{
-            // width: '30%',
-            // height: '60%',
-            display: `flex`,
-            padding: `0 10em`,
-            // marginTop: `5%`,
-            borderRadius: 15,
-            alignItems: `center`,
-            flexDirection: `column`,
-            justifyContent: `center`,
-            backgroundColor: `#2d002d`,
-          }}
-        >
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            Pseudo
-          </Text>
-          <input
+    <div className="h-screen flex bg-gray-bg1">
+      <div className="w-full max-w-md m-auto bg-white rounded-lg border border-primaryBorder shadow-default py-10 px-16">
+        <h1 className="text-2xl  font-medium text-primary mt-4 mb-12 text-center">
+          Création d&apos;un compte 🔐
+        </h1>
+        <div className="flex flex-col justify-center items-center">
+          <Input
+            placeholder="Pseudo"
+            onChange={(value) => setPseudo(value)}
+            value={pseudo}
             type="text"
-            className="form-input"
-            onChange={(e) => setPseudo(e.target.value)}
+            required
           />
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            Email
-          </Text>
-          <input
-            type="text"
-            className="form-input"
-            onChange={(e) => setEmail(e.target.value)}
+          <Input
+            placeholder="Email"
+            onChange={(value) => setEmail(value)}
+            value={email}
+            type="email"
+            required
           />
-          {/* <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            Photo de profile
-          </Text>
-          <input
-            type="text"
-            className="form-input"
-            onChange={(e) => setProfilImg(e.target.value)}
-          /> */}
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            Password
-          </Text>
-          <input
+          <Input
+            placeholder="Password"
+            onChange={(value) => setPassword(value)}
+            value={password}
             type="password"
-            className="form-input"
-            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-          <button
-            onClick={() => signup({ email, password, pseudo, profilImg })}
-            style={{
-              backgroundColor: `#F2F2F2`,
-              borderRadius: 15,
-              width: 150,
-              height: 50,
-              cursor: `pointer`,
-              margin: `1em`,
-            }}
-          >
-            <Text h4 color="#2d002d" style={{ padding: 0, margin: 0 }}>
-              CREER
-            </Text>
-          </button>
-          <Link href="/">
-            <Text
-              h6
-              color="#F2F2F2"
-              style={{ textDecoration: `underline`, margin: `1em` }}
-            >
-              se connecter
-            </Text>
-          </Link>
+          <div className="p-4">
+            <Button
+              label="Créer un compte"
+              onClick={() => submitForm({ email, password, pseudo })}
+            />
+          </div>
+
+          <Text>
+            Vous avez deja un compte ?
+            <Link href={ROUTER.login}> Se Connecter</Link>
+          </Text>
         </div>
       </div>
     </div>

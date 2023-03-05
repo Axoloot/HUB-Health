@@ -1,98 +1,64 @@
-import Link from 'next/link';
-import { useState } from 'react';
-import { Text } from '@nextui-org/react';
-// import { useRouter } from 'next/router';
 import { useUserContext } from '../../providers/userProvider';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { Input, Button } from '../../components';
+import { ROUTER } from '../../lib/utils';
+import { toast } from 'react-toastify';
+import { Text } from '@nextui-org/react';
+import Link from 'next/link';
+
+type LoginFormProps = {
+  email: string;
+  password: string;
+};
 
 const Login = () => {
-  // const router = useRouter();
-  const { login } = useUserContext();
-  const router = useRouter();
-  const { error } = router.query;
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState(``);
+  const { login } = useUserContext();
 
-  // useEffect(() => {
-  //   if (user) {
-  //    router.push("/home");
-  //   }
-  // }, [ user ])
+  const submitForm = ({ email, password }: LoginFormProps) => {
+    if (!email) {
+      toast.error(`L'email est obligatoire`);
+      return;
+    }
+    if (!password) {
+      toast.error(`Le mot de passe est obligatoire`);
+      return;
+    }
+    login(email, password, true, ROUTER.home);
+  };
 
   return (
-    <div className="layout-container">
-      <div
-        style={{
-          width: `100%`,
-          height: `100vh`,
-          display: `flex`,
-          flexDirection: `column`,
-          alignItems: `center`,
-          justifyContent: `center`,
-        }}
-      >
-        <div
-          style={{
-            // width: `30%`,
-            // height: `50%`,
-            display: `flex`,
-            padding: `0 10em`,
-            borderRadius: 15,
-            alignItems: `center`,
-            flexDirection: `column`,
-            justifyContent: `center`,
-            backgroundColor: `#2d002d`,
-          }}
-        >
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            Email
-          </Text>
-          <input
-            type="text"
-            className="form-input"
-            onChange={(e) => setEmail(e.target.value)}
+    <div className="h-screen flex bg-gray-bg1">
+      <div className="w-full max-w-md m-auto bg-white rounded-lg border border-primaryBorder shadow-default py-10 px-16">
+        <h1 className="text-2xl  font-medium text-primary mt-4 mb-12 text-center">
+          Connexion a votre compte 🔐
+        </h1>
+        <div className="flex flex-col justify-center items-center">
+          <Input
+            placeholder="Email"
+            onChange={(value) => setEmail(value)}
+            value={email}
+            type="email"
+            required
           />
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            Password
-          </Text>
-          <input
+          <Input
+            placeholder="Password"
+            onChange={(value) => setPassword(value)}
+            value={password}
             type="password"
-            className="form-input"
-            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-          <Text
-            h4
-            color={error ? `red` : `transparent`}
-            style={{ padding: 0, margin: 0 }}
-          >
-            Mauvais email ou mot de passe
+          <div className="p-4">
+            <Button
+              label="Connexion"
+              onClick={() => submitForm({ email, password })}
+            />
+          </div>
+          <Text className="text-center">
+            Vous n&apos;avez pas de compte ?
+            <Link href={ROUTER.register}> Créer un compte</Link>
           </Text>
-          <button
-            onClick={async () => {
-              await login(email, password);
-            }}
-            style={{
-              backgroundColor: `#F2F2F2`,
-              borderRadius: 15,
-              width: 150,
-              height: 50,
-              cursor: `pointer`,
-              marginTop: `1em`,
-            }}
-          >
-            <Text h4 color="#2d002d" style={{ padding: 0, margin: 0 }}>
-              LOGIN
-            </Text>
-          </button>
-          <Link href="/register">
-            <Text
-              h6
-              color="#F2F2F2"
-              style={{ textDecoration: `underline`, marginTop: `1em` }}
-            >
-              créer un compte
-            </Text>
-          </Link>
         </div>
       </div>
     </div>
