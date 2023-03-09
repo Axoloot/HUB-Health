@@ -1,4 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import '@/lib/database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as tf from '@tensorflow/tfjs-node';
 import { ApiError } from 'next/dist/server/api-utils';
