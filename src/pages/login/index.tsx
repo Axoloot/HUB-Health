@@ -1,10 +1,11 @@
 import { useUserContext } from '../../providers/userProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input, Button } from '../../components';
 import { ROUTER } from '../../lib/utils';
 import { toast } from 'react-toastify';
 import { Text } from '@nextui-org/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type LoginFormProps = {
   email: string;
@@ -12,11 +13,19 @@ type LoginFormProps = {
 };
 
 const Login = () => {
+  const router = useRouter();
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState(``);
-  const { login } = useUserContext();
+  const { login, user, isAuthenticated } = useUserContext();
 
-  const submitForm = ({ email, password }: LoginFormProps) => {
+  useEffect(() => {
+    if (isAuthenticated) {
+      window.localStorage.setItem(`user`, JSON.stringify(user));
+      router.push(ROUTER.home);
+    }
+  }, [isAuthenticated]);
+  console.log(`USER`, user, isAuthenticated);
+  const submitForm = async ({ email, password }: LoginFormProps) => {
     if (!email) {
       toast.error(`L'email est obligatoire`);
       return;
@@ -25,7 +34,7 @@ const Login = () => {
       toast.error(`Le mot de passe est obligatoire`);
       return;
     }
-    login(email, password, true, ROUTER.home);
+    await login(email, password, true, ROUTER.home);
   };
 
   return (

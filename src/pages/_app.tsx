@@ -1,16 +1,28 @@
 import Head from 'next/head';
 import { AppProps } from 'next/app';
+import { useEffect, useState } from 'react';
 
 import '../../styles/card.css';
 import '../../styles/layout.css';
 import '../../styles/globals.css';
 import UserProvider from '../providers/userProvider';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { NavBar } from '../components';
+
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const AnyComponent = Component as any;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const user = window.localStorage.getItem(`user`);
+    if (user) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -27,7 +39,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#f2f2f2" />
       </Head>
       <UserProvider>
-        <AnyComponent {...pageProps} />
+        {isLoggedIn && (
+          <>
+            <NavBar />
+            <AnyComponent className="p-8" {...pageProps} />
+          </>
+        )}
+        {!isLoggedIn && <AnyComponent {...pageProps} />}
       </UserProvider>
       <ToastContainer />
     </>

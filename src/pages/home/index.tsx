@@ -1,49 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text } from '@nextui-org/react';
 import { useUserContext } from '../../providers/userProvider';
+import { useRouter } from 'next/router';
+import { ROUTER } from '../../lib/utils';
+import { SickCard, Layout } from '@/components';
 
-const Login = () => {
-  const { user } = useUserContext();
+const sicknessData = [
+  {
+    name: `Poumons`,
+    rate: 5,
+  },
+  {
+    name: `Coeur`,
+    rate: 3,
+  },
+  {
+    name: `Foie`,
+    rate: 4,
+  },
+  {
+    name: `Reins`,
+    rate: 4,
+  },
+];
+
+const Home = () => {
+  const Router = useRouter();
+  const { isAuthenticated } = useUserContext();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      Router.push(ROUTER.login);
+    }
+  }, []);
 
   return (
-    <div className="layout-container">
-      <div
-        style={{
-          width: `100%`,
-          height: `100vh`,
-          display: `flex`,
-          flexDirection: `column`,
-          alignItems: `center`,
-          justifyContent: `center`,
-        }}
-      >
-        <div
-          style={{
-            display: `flex`,
-            padding: `0 10em`,
-            borderRadius: 15,
-            alignItems: `center`,
-            flexDirection: `column`,
-            justifyContent: `center`,
-            backgroundColor: `#2d002d`,
-          }}
-        >
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            {`Email: ${user?.email}`}
-          </Text>
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            {`pseudo: ${user?.pseudo}`}
-          </Text>
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            {`Password: ${user?.password}`}
-          </Text>
-          <Text h6 color="#F2F2F2" style={{ margin: `1em ` }}>
-            {`createdAt: ${user?.createdAt} | modifiedAt: ${user?.modifiedAt}`}
-          </Text>
-        </div>
-      </div>
-    </div>
+    <>
+      <Layout>
+        <>
+          <div className="container m-auto grid grid-cols-2 gap-4">
+            {sicknessData.map((sickness, index) => {
+              return (
+                <SickCard
+                  key={index}
+                  name={sickness.name}
+                  rate={sickness.rate}
+                />
+              );
+            })}
+          </div>
+        </>
+      </Layout>
+    </>
   );
 };
 
-export default Login;
+export default Home;
