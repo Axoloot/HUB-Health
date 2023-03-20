@@ -1,6 +1,5 @@
 import '@/lib/database';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ApiError } from 'next/dist/server/api-utils';
 import PatientModel from '@/lib/models/Patients';
 
 export default async function handler(
@@ -8,11 +7,9 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    if (!req.body) throw new ApiError(500, `missing body`);
     switch (req.method) {
       case `GET`:
-        const newPatient = new PatientModel(req.body);
-        const patients = await newPatient.find({});
+        const patients = await PatientModel.find({});
         return res.status(200).json(patients);
     }
   } catch (e) {

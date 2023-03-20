@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --fix-missing --no-install-recommends \
         wget
 
 # Install NodeJS
-RUN curl --silent --location https://deb.nodesource.com/setup_10.x | bash -
+RUN curl --silent --location https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install --yes nodejs
 
 # Install yarn

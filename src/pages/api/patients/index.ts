@@ -15,10 +15,10 @@ export default async function handler(
         newPatient.save();
         return res.status(200).json(newPatient);
       case `GET`:
-        const sickness = await newPatient.find(req.body)[0];
+        const sickness = await PatientModel.find(req.body);
         return res.status(200).json(sickness);
       case `PATCH`:
-        const editedSickness = await newPatient.findOneAndUpdate(
+        const editedSickness = await PatientModel.findOneAndUpdate(
           { id: req.body.id },
           req.body,
         );
