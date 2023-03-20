@@ -1,40 +1,22 @@
-name: Check PR
-
-on: [pull_request]
+name: Remote update execution
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  run-ci:
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    name: Run Type Check & Linters
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 7
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Check types
-        run: pnpm type-check
-
-      - name: Check linting
-        run: pnpm lint
-
-      - name: Check commits messages
-        uses: wagoid/commitlint-github-action@v5
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          yarn
+          yarn build
+          yarn start
