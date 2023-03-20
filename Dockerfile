@@ -1,5 +1,5 @@
 # pull official base image
-FROM tfjs-node:cpu
+FROM ubuntu:16.04
 
 # set working directory
 WORKDIR /app
