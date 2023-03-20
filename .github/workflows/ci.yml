@@ -19,4 +19,4 @@ jobs:
         script: |
           yarn
           yarn build
-          yarn start
+          echo "coucou"
