@@ -16,13 +16,10 @@ export default async function handler(
         newPatient.save();
         return res.status(200).json(newPatient);
       case `GET`:
-        const sickness = await PatientModel.findOne(req.body);
-        const test = await Promise.all(
-          sickness.sickness.map((sickness: string) => {
-            return SicknessModel.findById(sickness);
-          }),
+        const patient = await PatientModel.findOne(req.body).populate(
+          `sickness`,
         );
-        return res.status(200).json({ ...sickness._doc, sickness: test });
+        return res.status(200).json(patient);
       case `PATCH`:
         const editedSickness = await PatientModel.findOneAndUpdate(
           { id: req.body.id },

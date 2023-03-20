@@ -9,7 +9,7 @@ export default async function handler(
   try {
     switch (req.method) {
       case `GET`:
-        const patients = await PatientModel.find({});
+        const patients = await PatientModel.find().populate(`sickness`);
         return res.status(200).json(patients);
     }
   } catch (e) {
