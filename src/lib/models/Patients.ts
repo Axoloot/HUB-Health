@@ -1,10 +1,10 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose, { Schema, model, models } from 'mongoose';
 
 export interface IPatient {
   firstname: string;
   lastname: string;
   email: string;
-  sickness: string[];
+  sickness: mongoose.Schema.Types.ObjectId[];
 }
 
 const patientSchema = new Schema<IPatient>(
@@ -12,7 +12,7 @@ const patientSchema = new Schema<IPatient>(
     email: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    sickness: { type: [String], required: true },
+    sickness: [{ type: mongoose.Schema.Types.ObjectId, ref: `Sickness` }],
   },
   { timestamps: true },
 );

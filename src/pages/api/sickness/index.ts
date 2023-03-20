@@ -1,7 +1,9 @@
 import '@/lib/database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ApiError } from 'next/dist/server/api-utils';
+import PatientModel from '@/lib/models/Patients';
 import SicknessModel from '@/lib/models/Sickness';
+import mongoose from 'mongoose';
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,6 +15,10 @@ export default async function handler(
       case `POST`:
         const newSickness = new SicknessModel(req.body);
         newSickness.save();
+        await PatientModel.findOneAndUpdate(
+          { id: req.body.PatientId },
+          { $push: { sickness: new mongoose.mongo.ObjectId(newSickness._id) } },
+        );
         return res.status(200).json(newSickness);
       case `GET`:
         const sickness = await SicknessModel.find(req.body);

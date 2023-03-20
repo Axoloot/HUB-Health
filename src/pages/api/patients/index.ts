@@ -2,6 +2,7 @@ import '@/lib/database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ApiError } from 'next/dist/server/api-utils';
 import PatientModel from '@/lib/models/Patients';
+import SicknessModel from '@/lib/models/Sickness';
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,8 +16,13 @@ export default async function handler(
         newPatient.save();
         return res.status(200).json(newPatient);
       case `GET`:
-        const sickness = await PatientModel.find(req.body);
-        return res.status(200).json(sickness);
+        const sickness = await PatientModel.findOne(req.body);
+        const test = await Promise.all(
+          sickness.sickness.map((sickness: string) => {
+            return SicknessModel.findById(sickness);
+          }),
+        );
+        return res.status(200).json({ ...sickness._doc, sickness: test });
       case `PATCH`:
         const editedSickness = await PatientModel.findOneAndUpdate(
           { id: req.body.id },
