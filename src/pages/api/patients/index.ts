@@ -13,7 +13,7 @@ export default async function handler(
     switch (req.method) {
       case `POST`:
         const newPatient = new PatientModel(req.body);
-        newPatient.save();
+        await newPatient.save();
         return res.status(200).json(newPatient);
       case `GET`:
         const patient = await PatientModel.findOne(req.body).populate(
@@ -22,7 +22,7 @@ export default async function handler(
         return res.status(200).json(patient);
       case `PATCH`:
         const editedSickness = await PatientModel.findOneAndUpdate(
-          { id: req.body.id },
+          { id: req.body._id },
           req.body,
         );
         return res.status(200).json(editedSickness);

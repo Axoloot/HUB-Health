@@ -14,7 +14,7 @@ const patientSchema = new Schema<IPatient>(
     lastname: { type: String, required: true },
     sickness: [{ type: mongoose.Schema.Types.ObjectId, ref: `Sickness` }],
   },
-  { timestamps: true },
+  { timestamps: true, strictQuery: `throw`, strict: `throw` },
 );
 
 export default models.Patient || model(`Patient`, patientSchema);

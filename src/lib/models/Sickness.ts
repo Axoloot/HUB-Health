@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose, { Schema, model, models } from 'mongoose';
 
 export interface SicknessRo {
   name: string;
@@ -9,6 +9,8 @@ export interface SicknessRo {
   ai_supposition: string;
   date: string;
   result: string;
+  patientId: string;
+  _id: mongoose.Schema.Types.ObjectId;
 }
 
 const sicknessRo = new Schema<SicknessRo>(
@@ -21,6 +23,8 @@ const sicknessRo = new Schema<SicknessRo>(
     ai_supposition: { type: String, required: true },
     date: { type: String, required: true },
     result: { type: String, required: true },
+    patientId: { type: String, required: true },
+    _id: { type: mongoose.Schema.Types.ObjectId },
   },
   { timestamps: true, strictQuery: true },
 );

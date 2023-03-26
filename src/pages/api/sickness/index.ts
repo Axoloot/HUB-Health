@@ -14,9 +14,9 @@ export default async function handler(
     switch (req.method) {
       case `POST`:
         const newSickness = new SicknessModel(req.body);
-        newSickness.save();
+        await newSickness.save();
         await PatientModel.findOneAndUpdate(
-          { id: req.body.PatientId },
+          { _id: req.body.patientId },
           { $push: { sickness: new mongoose.mongo.ObjectId(newSickness._id) } },
         );
         return res.status(200).json(newSickness);
@@ -25,7 +25,7 @@ export default async function handler(
         return res.status(200).json(sickness);
       case `PATCH`:
         const editedSickness = await SicknessModel.findOneAndUpdate(
-          { id: req.body.id },
+          { id: req.body._id },
           req.body,
         );
         return res.status(200).json(editedSickness);

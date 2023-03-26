@@ -19,7 +19,7 @@ export default async function handler(
         if (users.length > 0) return res.status(400).end();
 
         const newUser = new UserModel(req.body);
-        newUser.save();
+        await newUser.save();
         return res.status(200).json(newUser);
 
       // case `DELETE`:
