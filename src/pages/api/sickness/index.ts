@@ -13,6 +13,7 @@ export default async function handler(
     switch (req.method) {
       case `POST`:
         if (!req.body) throw new ApiError(500, `missing body`);
+        req.body._id = new mongoose.Types.ObjectId();
         const newSickness = new SicknessModel(req.body);
         await newSickness.save();
         await PatientModel.findOneAndUpdate(
