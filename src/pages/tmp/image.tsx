@@ -43,7 +43,7 @@ const Login = () => {
                     patientId: `641fb885f774d4cb3c4f0dc8`,
                   });
                   setLoading(false);
-                }, 15);
+                }, 3000);
               }}
             />
           )}
