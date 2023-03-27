@@ -16,8 +16,7 @@ export default async function handler(
     const data = JSON.parse(req.body.data);
     const model = await modelPromise;
     const output = model.predict(tf.tensor(data));
-    console.log(output.toString());
-    const result = output.toString().slice(14, 23); // bancal, trouver la reel solution
+    const result = output.toString().replace(/[^\d.-]/g, ``);
     res.status(200).send({ result });
   } catch (e) {
     console.error(e);
