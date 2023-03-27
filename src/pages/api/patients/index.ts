@@ -2,7 +2,7 @@ import '@/lib/database';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ApiError } from 'next/dist/server/api-utils';
 import PatientModel from '@/lib/models/Patients';
-import SicknessModel from '@/lib/models/Sickness';
+import '@/lib/models/Sickness';
 
 export default async function handler(
   req: NextApiRequest,
