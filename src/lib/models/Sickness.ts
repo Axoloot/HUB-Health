@@ -24,7 +24,7 @@ const sicknessRo = new Schema<SicknessRo>(
     date: { type: String, required: true },
     result: { type: String, required: true },
     patientId: { type: String, required: true },
-    _id: { type: mongoose.Schema.Types.ObjectId },
+    _id: { type: mongoose.Schema.Types.ObjectId, ref: `Patient` },
   },
   { timestamps: true, strictQuery: true },
 );
