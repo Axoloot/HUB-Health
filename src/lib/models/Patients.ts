@@ -12,7 +12,7 @@ const patientSchema = new Schema<IPatient>(
     email: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    sickness: [{ type: mongoose.Schema.Types.ObjectId, ref: `sickness` }],
+    sickness: [{ type: mongoose.Schema.Types.ObjectId, ref: `Sickness` }],
   },
   { timestamps: true, strictQuery: `throw`, strict: `throw` },
 );
