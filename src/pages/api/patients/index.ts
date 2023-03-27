@@ -9,18 +9,24 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    if (!req.body) throw new ApiError(500, `missing body`);
     switch (req.method) {
       case `POST`:
+        if (!req.body) throw new ApiError(500, `missing body`);
         const newPatient = new PatientModel(req.body);
         await newPatient.save();
         return res.status(200).json(newPatient);
       case `GET`:
-        const patient = await PatientModel.findOne(req.body).populate(
-          `sickness`,
-        );
+        const id = req.query.id;
+        if (!id) {
+          const patients = await PatientModel.find().populate(`sickness`);
+          return res.status(200).json(patients);
+        }
+        const patient = await PatientModel.findOne({
+          _id: id,
+        }).populate(`sickness`);
         return res.status(200).json(patient);
       case `PATCH`:
+        if (!req.body) throw new ApiError(500, `missing body`);
         const editedSickness = await PatientModel.findOneAndUpdate(
           { id: req.body._id },
           req.body,
