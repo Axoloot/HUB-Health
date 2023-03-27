@@ -24,7 +24,7 @@ const Login = () => {
       router.push(ROUTER.home);
     }
   }, [isAuthenticated]);
-  console.log(`USER`, user, isAuthenticated);
+
   const submitForm = async ({ email, password }: LoginFormProps) => {
     if (!email) {
       toast.error(`L'email est obligatoire`);

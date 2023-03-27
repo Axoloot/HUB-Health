@@ -2,6 +2,7 @@ export const ROUTER = {
   login: `login`,
   register: `register`,
   home: `/`,
-  listCustomers: `/customers`,
+  listCustomers: `/patients`,
   listServices: `/services`,
+  patientDetails: `/fiche-patient/`,
 };
