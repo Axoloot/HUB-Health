@@ -19,5 +19,6 @@ jobs:
         script: |
           cd ./HUB-Health
           git pull
-          docker-compose down && docker-compose up --build -d
+          docker-compose down
           yes | docker system prune -a
+          docker-compose up --build -d
