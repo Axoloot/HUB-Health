@@ -30,7 +30,7 @@ RUN apt-get clean && \
 WORKDIR /app
 
 COPY . .
-RUN yarn
+RUN yarn --network-timeout 100000
 RUN yarn build
 
 # expose port
