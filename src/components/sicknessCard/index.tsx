@@ -28,6 +28,8 @@ export const SicknessCard = ({ sickness }: SicknessCardProps) => {
       className="bg-white shadow rounded-lg p-4 max-h-[200px]"
     >
       <h3 className="text-lg font-medium mb-2">maladie :{sickness.name}</h3>
+      <p>AI Conclusion : {sickness.ai_supposition}</p>
+      <p>result: {sickness.result}</p>
     </div>
   );
 };

@@ -5,4 +5,8 @@ export const ROUTER = {
   listCustomers: `/patients`,
   listServices: `/services`,
   patientDetails: `/fiche-patient/`,
+  createHeart: `/heart`,
+  createChest: `/chest`,
+  createFetal: `/fetal`,
+  createBreast: `/breast`,
 };

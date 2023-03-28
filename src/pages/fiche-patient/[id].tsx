@@ -3,7 +3,7 @@ import { Text } from '@nextui-org/react';
 import { useUserContext } from '../../providers/userProvider';
 import { useRouter } from 'next/router';
 import { ROUTER } from '../../lib/utils';
-import { SicknessCard, Layout } from '@/components';
+import { SicknessCard, Layout, Button } from '@/components';
 import axios from 'axios';
 
 type SicknessRo = {
@@ -40,13 +40,8 @@ const FichePatient = () => {
       params: { id: patientId },
     });
     console.log(response.data);
-    if (response.data.sickness && response.data.sickness.length > 0) {
-      const sickness = await axios.get(`/api/sickness`, {
-        params: { patient_id: patientId },
-      });
-      setSicknessData(sickness.data);
-    }
     setPatient(response.data);
+    setSicknessData(response.data.sickness);
   };
 
   useEffect(() => {
@@ -85,6 +80,32 @@ const FichePatient = () => {
               sicknessData.map((sickness) => (
                 <SicknessCard key={sickness._id} sickness={sickness} />
               ))}
+            <div className="p-4">
+              <Button
+                label="Ajouter un diagnostic torse"
+                onClick={() =>
+                  Router.push(`${ROUTER.createChest}/${patientId}`)
+                }
+              />
+              <Button
+                label="Ajouter un diagnostic cardiaque"
+                onClick={() =>
+                  Router.push(`${ROUTER.createHeart}/${patientId}`)
+                }
+              />
+              <Button
+                label="Ajouter un diagnostic foetal"
+                onClick={() =>
+                  Router.push(`${ROUTER.createFetal}/${patientId}`)
+                }
+              />
+              <Button
+                label="Ajouter un diagnostic cancer du sein"
+                onClick={() =>
+                  Router.push(`${ROUTER.createBreast}/${patientId}`)
+                }
+              />
+            </div>
           </div>
         </div>
       </Layout>

@@ -1,8 +1,13 @@
 import { Button } from '@/components';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
+import { useUserContext } from '@/providers/userProvider';
 
-const Login = () => {
+const HandleImage = () => {
+  const Router = useRouter();
+  const { user } = useUserContext();
+  const today = new Date().toISOString();
   const [file, setFile] = useState(``);
   const [fileName, setFileName] = useState(``);
   const [loading, setLoading] = useState(false);
@@ -27,20 +32,21 @@ const Login = () => {
               onClick={() => {
                 setLoading(true);
                 setTimeout(async () => {
+                  const patientId = Router.query.id;
                   await axios.post(`/api/sickness`, {
-                    name: `string`,
+                    name: `Chest Sickness`,
                     description: `string`,
                     doctor_supposition: `string`,
-                    doctor_name: `string`,
-                    doctor_email: `string`,
+                    doctor_name: user?.pseudo,
+                    doctor_email: user?.email,
                     ai_supposition:
                       fileName === `test3.jpeg` ? `POSITIVE` : `NEGATIVE`,
-                    date: `string`,
+                    date: new Date().toISOString(),
                     result:
                       fileName === `test3.jpeg`
                         ? `0.8913719`
                         : Math.random().toString().slice(0, 9),
-                    patientId: `641fb885f774d4cb3c4f0dc8`,
+                    patientId: patientId,
                   });
                   setLoading(false);
                 }, 3000);
@@ -53,4 +59,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default HandleImage;
